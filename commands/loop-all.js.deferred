@@ -1,0 +1,28 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
+let {queues, connections, players, playing, repeating, repeatingAll, currSongs, nowPlayingMessageBuilder} = require('../globals.js');
+
+module.exports = {
+    data: new SlashCommandBuilder().setName('loop-all')
+        .setDescription('Instead of songs leaving the queue when complete, move them to the back of the queue.')
+        .addStringOption( option =>
+            option.setName('status')
+                .setDescription('show the status of loop-all instead of toggling')
+                .setRequired(false)
+                .addChoice('show', 'show')),
+    async execute(interaction) {
+        await interaction.deferReply();
+        let show_status = interaction.options.getString('status');
+
+        if (show_status) {
+            await interaction.editReply(`\`\`\`bash\nloop-all is currently ${(repeatingAll.get(interaction.guildId)) ? ("enabled") : ("disabled")}\`\`\``);
+            return;
+        }
+
+        repeatingAll.set(interaction.guildId, !repeatingAll.get(interaction.guildId));
+
+        await interaction.editReply(`\`\`\`bash\nloop-all is now ${(repeatingAll.get(interaction.guildId)) ? ("enabled") : ("disabled")}\`\`\``);
+
+        console.log(`[${interaction.guild.name}] loop-all is now ${repeatingAll.get(interaction.guildId)}`);
+    }
+}

@@ -1,0 +1,87 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { createAudioResource } = require('@discordjs/voice');
+let {queues, connections, players, playing, repeating, currSongs, playlistIndexes, nowPlayingMessageBuilder, queueMessageBuilder} = require('../globals.js');
+
+const video_downloader = require('play-dl');
+const ytSearch = require('yt-search');
+
+module.exports = {
+    data: new SlashCommandBuilder().setName('skip-playlist')
+        .setDescription('Skips to the next song in the queue, if there is one.')
+        .addIntegerOption( option =>
+            option.setName('multiple')
+                .setDescription('Skip multiple playlists if there are more than one queued up.')
+                .setRequired(false)),
+    async execute(interaction) {
+        await interaction.deferReply();
+
+        let skip_to_index = interaction.options.getInteger('multiple');
+
+        if (skip_to_index) {
+            skip_to_index--;
+
+            skip_to_index = playlistIndexes.get(interaction.guildId)[skip_to_index];
+
+            console.log(skip_to_index);
+
+            playlistIndexes.get(interaction.guildId).splice(0, 1);
+
+            for (let i = 0; i < playlistIndexes.get(interaction.guildId).length; i++) {
+                playlistIndexes.get(interaction.guildId)[i] -= skip_to_index;
+            }
+
+            if (skip_to_index < 0 || skip_to_index >= queues.get(interaction.guildId).length) {
+                await interaction.editReply("```That isn't a valid position in the queue!```");
+                return;
+            }
+
+            await interaction.editReply(`\`\`\`bash\nSkipping to "${queues.get(interaction.guildId)[skip_to_index].title}"\`\`\``);
+
+            currSongs.set(interaction.guildId, queues.get(interaction.guildId)[skip_to_index]);
+            queues.get(interaction.guildId).splice(0, skip_to_index + 1);
+
+            var currentSong = await video_downloader.stream(currSongs.get(interaction.guildId).url);
+            const currentResource = createAudioResource(currentSong.stream, {
+                inputType: currentSong.type
+            });
+
+            players.get(interaction.guildId).play(currentResource);
+
+            return;
+        }
+
+        // if (queues.get(interaction.guildId).length > 0 && repeating.get(interaction.guildId)) {
+        //     await interaction.editReply(`\`\`\`bash\nskipping \"${currSongs.get(interaction.guildId).title}\"\`\`\``);
+
+        //     // console.log(queues.get(interaction.guildId)[0].title);
+
+        //     currSongs.set(interaction.guildId, queues.get(interaction.guildId)[0]);
+        //     queues.get(interaction.guildId).splice(0, 1);
+
+        //     // console.log(queues.get(interaction.guildId)[0].title);
+        //     // console.log(currSongs.get(interaction.guildId).title);
+
+        //     var currentSong = await video_downloader.stream(currSongs.get(interaction.guildId).url);
+
+        //     const currentResource = createAudioResource(currentSong.stream, {
+        //         inputType: currentSong.type
+        //     });
+
+        //     players.get(interaction.guildId).pause();
+        //     players.get(interaction.guildId).play(currentResource);
+
+        //     return;
+        // } else if (queues.get(interaction.guildId).length == 0) {
+        //     playing.set(interaction.guildId, false);
+        //     // repeating.set(interaction.guildId, false);
+        // }
+
+        players.get(interaction.guildId).stop();
+
+        if (!interaction.replied) {
+            await interaction.editReply(`\`\`\`bash\nSkipping the current playlist\`\`\``);
+        } else {
+            await interaction.channel.send(`\`\`\`bash\nSkipping the current playlist\`\`\``);
+        }
+    }
+}

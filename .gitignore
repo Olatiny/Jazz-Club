@@ -1,0 +1,6 @@
+config.json
+test_config.json
+test*.js
+old
+.data
+.vscode
