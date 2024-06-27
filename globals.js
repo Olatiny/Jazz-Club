@@ -78,7 +78,7 @@ class Server {
             getVoiceConnection(this.guild_id).destroy();
         } 
         if (this.currentStream) {
-            this.currentStream.stream.destroy();
+            this.currentStream.destroy();
         }
         // this.guild_id = null;
         // this.currentSong = null;

@@ -3,6 +3,8 @@ const { createAudioResource } = require('@discordjs/voice');
 const { MessageEmbed, Interaction, CommandInteraction } = require('discord.js');
 let {servers} = require('../globals.js');
 const play_dl = require('play-dl');
+const ytdl = require("ytdl-core-discord");
+
 
 
 module.exports = {
@@ -18,6 +20,9 @@ module.exports = {
                  * @returns 
                  */
         async execute(interaction) {
+            await interaction.reply({ content: "```For the time being, this feature is disabled. Sorry :(```", ephemeral: true });
+            return;
+
             /**
              * @type {String}
              */
@@ -97,18 +102,28 @@ module.exports = {
 
             // await interaction.reply(`The time in MS you are seeking to is: ${time_s}`);
             try {
-                var currentSong = await play_dl.stream(servers.get(interaction.guildId).currentSong.url, {seek: time_s});
-                const resource = createAudioResource(currentSong.stream, {
+                // var currentSong = await play_dl.stream(servers.get(interaction.guildId).currentSong.url, {seek: time_s});
+                var currentSong = await ytdl(servers.get(interaction.guildId).currentSong.url, {
+                    filter: "audioonly",
+                    highWaterMark: 1 << 62,
+                    liveBuffer: 1 << 62,
+                    dlChunkSize: 0,
+                    quality: 'lowestaudio',
+                });
+
+                const resource = createAudioResource(currentSong, {
                     inputType: currentSong.type
                 });
 
-                servers.get(interaction.guildId).currentStream.stream.destroy();
+                servers.get(interaction.guildId).currentStream.destroy();
                 servers.get(interaction.guildId).currentStream = currentSong;
                 
                 servers.get(interaction.guildId).audioPlayer.stop();
                 servers.get(interaction.guildId).audioPlayer.play(resource);
                 await interaction.reply({ content: `\`\`\`Seeked to ${input} in the current song.\`\`\``, ephemeral: false });
             } catch (err) {
+                console.log(err);
+                
                 if (servers.get(interaction.guildId).isPlaying) {
                     await interaction.reply({ content: "```Time out of range for video. Please make sure the timestamp is valid for the video first.```", ephemeral: true });
                 } else {

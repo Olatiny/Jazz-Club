@@ -9,6 +9,7 @@ client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const video_downloader = require('play-dl');
+const ytdl = require("ytdl-core-discord");
 const ytSearch = require('yt-search');
 
 video_downloader.getFreeClientID().then((clientId) => video_downloader.setToken({
@@ -119,12 +120,20 @@ let addListener = function(interaction) {
              */
             if (servers.get(interaction.guildId).repeating && servers.get(interaction.guildId).isPlaying) {
                 //console.log("in on event" + servers.get(interaction.guildId).currentSong.title);
-                var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
-                const currentResource = createAudioResource(currentSong.stream, {
+                // var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
+                var currentSong = await ytdl(servers.get(interaction.guildId).currentSong.url, {
+                    filter: "audioonly",
+                    highWaterMark: 1 << 62,
+                    liveBuffer: 1 << 62,
+                    dlChunkSize: 0,
+                    quality: 'highestaudio'
+                });
+
+                const currentResource = createAudioResource(currentSong, {
                     inputType: currentSong.type
                 });
 
-                servers.get(interaction.guildId).currentStream.stream.destroy();
+                servers.get(interaction.guildId).currentStream.destroy();
                 servers.get(interaction.guildId).currentStream = currentSong;
 
                 servers.get(interaction.guildId).audioPlayer.pause();
@@ -155,12 +164,20 @@ let addListener = function(interaction) {
                         };
                     }
 
-                    currentSong = await video_downloader.stream(servers.get(interaction.guildId).queue[0].url);
-                    const currentResource = createAudioResource(currentSong.stream, {
+                    // currentSong = await video_downloader.stream(servers.get(interaction.guildId).queue[0].url);
+                    currentSong = await ytdl(servers.get(interaction.guildId).queue[0].url, {
+                        filter: "audioonly",
+                        highWaterMark: 1 << 62,
+                        liveBuffer: 1 << 62,
+                        dlChunkSize: 0,
+                        quality: 'highestaudio'
+                    });
+                    
+                    const currentResource = createAudioResource(currentSong, {
                         inputType: currentSong.type
                     });
 
-                    servers.get(interaction.guildId).currentStream.stream.destroy();
+                    servers.get(interaction.guildId).currentStream.destroy();
                     servers.get(interaction.guildId).currentStream = currentSong;
 
                     servers.get(interaction.guildId).currentSong = servers.get(interaction.guildId).queue[0];

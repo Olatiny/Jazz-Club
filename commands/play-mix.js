@@ -3,6 +3,7 @@ const { createAudioResource, getVoiceConnection } = require('@discordjs/voice');
 const { MessageAttachment } = require('discord.js');
 
 const video_downloader = require('play-dl');
+const ytdl = require("ytdl-core-discord");
 const ytSearch = require('yt-search');
 
 // let {queues, players, playing, currSongs, startTimes, nowPlayingMessageBuilder, addedToQueueEmbedBuilder} = require('../globals.js');
@@ -50,9 +51,16 @@ module.exports = {
             servers.get(interaction.guildId).currentSong = mix[0];
             
             // Plays the video
-            // var currentSong = await video_downloader.stream(mix.url);
-            var currentSong = await video_downloader.stream(mix[0].url);
-            const currentResource = createAudioResource(currentSong.stream, {
+            // var currentSong = await video_downloader.stream(mix[0].url);
+            var currentSong = await ytdl(mix[0].url, {
+                filter: "audioonly",
+                highWaterMark: 1 << 62,
+                liveBuffer: 1 << 62,
+                dlChunkSize: 0,
+                quality: 'highestaudio'
+            });
+
+            const currentResource = createAudioResource(currentSong, {
                 inputType: currentSong.type
             });
 

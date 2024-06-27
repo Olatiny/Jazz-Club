@@ -61,8 +61,16 @@ module.exports = {
             servers.get(interaction.guildId).currentSong = servers.get(interaction.guildId).queue[0];
             servers.get(interaction.guildId).queue.splice(0, 0 + 1);
 
-            var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
-            const currentResource = createAudioResource(currentSong.stream, {
+            // var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
+            var currentSong = await ytdl(localvideo[0].url, {
+                filter: "audioonly",
+                highWaterMark: 1 << 62,
+                liveBuffer: 1 << 62,
+                dlChunkSize: 0,
+                quality: 'highestaudio'
+            });
+
+            const currentResource = createAudioResource(currentSong, {
                 inputType: currentSong.type
             });
 
@@ -98,9 +106,16 @@ module.exports = {
             // console.log(servers.get(interaction.guildId).queue[0].title);
             // console.log(servers.get(interaction.guildId).currentSong.title);
 
-            var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
+            // var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
+            var currentSong = await ytdl(localvideo[0].url, {
+                filter: "audioonly",
+                highWaterMark: 1 << 62,
+                liveBuffer: 1 << 62,
+                dlChunkSize: 0,
+                quality: 'highestaudio'
+            });
 
-            const currentResource = createAudioResource(currentSong.stream, {
+            const currentResource = createAudioResource(currentSong, {
                 inputType: currentSong.type
             });
 
