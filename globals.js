@@ -9,20 +9,6 @@ video_downloader.getFreeClientID().then((clientId) => video_downloader.setToken(
     }
 }));
 
-// let queues = new Map();
-// let queueMessages = new Map();
-// // let connections = new Map();
-// let playing = new Map();
-// let startTimes = new Map();
-// let repeating = new Map();
-// let currSongs = new Map();
-// let players = new Map();
-// let hasListener = new Map();
-// let hasDisconnected = new Map();
-// let disconnectTimers = new Map();
-// let funkyMode = new Map();
-// let funkyTimeout = new Map();
-
 class Server {
     constructor(guild_id) {
         // server ID;
@@ -61,23 +47,16 @@ class Server {
         this.hasListener = false;
         this.funkyMode = false;
         this.funkyTimeout = false;
-        // this.compact = false;   
     }
 
     async disconnect() {
-        console.log("begin!");
-
         if (this.audioPlayer) {
-            // console.log(this.audioPlayer.listenerCount(AudioPlayerStatus.Idle) + this.audioPlayer.listenerCount('error') + " listeners before");
             this.audioPlayer.removeAllListeners();
             this.audioPlayer.stop();
-            // console.log(this.audioPlayer.listenerCount(AudioPlayerStatus.Idle) + this.audioPlayer.listenerCount('error') + " listeners after");
         } 
 
         if (getVoiceConnection(this.guild_id)) {
-            // console.log(getVoiceConnection(this.guild_id).listenerCount(VoiceConnectionStatus.Disconnected) + " listeners before");
             await getVoiceConnection(this.guild_id).removeAllListeners();
-            // console.log(getVoiceConnection(this.guild_id).listenerCount(VoiceConnectionStatus.Disconnected) + " listeners after");
             await getVoiceConnection(this.guild_id).destroy();
         } 
 
@@ -87,10 +66,6 @@ class Server {
         }
     }
 }
-
-// let a = new Server();
-
-// a.disconnectTimer
 
 /**
  * @type {Map<Number, Server>}

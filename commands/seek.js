@@ -93,9 +93,6 @@ module.exports = {
                 time_s += Number(timeArray[0]) * 60 * 60 + Number(timeArray[1]) * 60 + Number(timeArray[2]);
             }
 
-            // console.log(time_s);
-
-            // await interaction.reply(`The time in MS you are seeking to is: ${time_s}`);
             try {
                 var currentSong = await play_dl.stream(servers.get(interaction.guildId).currentSong.url, {seek: time_s});
                 const resource = createAudioResource(currentSong.stream, {

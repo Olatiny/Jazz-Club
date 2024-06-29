@@ -14,25 +14,6 @@ module.exports = {
         servers.set(interaction.guildId, null);
         servers.delete(interaction.guildId);
 
-        console.log("donezo");
-
-        // hasDisconnected.set(interaction.guildId, true);
-
-        // queues.delete(interaction.guildId);
-        // await players.get(interaction.guildId).stop();
-        // players.delete(interaction.guildId);
-        // getVoiceConnection(interaction.guildId).destroy();
-        // // connections.delete(interaction.guildId);
-        // currSongs.delete(interaction.guildId);
-        // playing.delete(interaction.guildId);
-        // repeating.delete(interaction.guildId);
-        // hasListener.delete(interaction.guildId);
-        // disconnectTimers.delete(interaction.guildId);
-        // queueMessages.delete(interaction.guildId);
-        // startTimes.delete(interaction.guildId);
-        // funkyMode.delete(interaction.guildId);
-        // funkyTimeout.delete(interaction.guildId);
-
         await interaction.editReply('```Stopping the player and exiting the voice chat.\n```');
         console.log(`[${interaction.guild.name}] Stopping the player`);
     }
