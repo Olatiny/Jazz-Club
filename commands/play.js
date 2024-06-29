@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { createAudioResource, getVoiceConnection } = require('@discordjs/voice');
 const { MessageAttachment } = require('discord.js');
 
-const video_downloader = require('play-dl');
+const video_downloader = require('play-dl3');
 const ytSearch = require('yt-search');
 
 // let {queues, players, playing, currSongs, startTimes, nowPlayingMessageBuilder, addedToQueueEmbedBuilder} = require('../globals.js');

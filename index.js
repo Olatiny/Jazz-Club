@@ -8,7 +8,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const video_downloader = require('play-dl');
+const video_downloader = require('play-dl3');
 const ytSearch = require('yt-search');
 
 video_downloader.getFreeClientID().then((clientId) => video_downloader.setToken({

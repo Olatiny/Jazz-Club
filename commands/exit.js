@@ -10,9 +10,11 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
 
-        servers.get(interaction.guildId).disconnect();
+        await servers.get(interaction.guildId).disconnect();
         servers.set(interaction.guildId, null);
         servers.delete(interaction.guildId);
+
+        console.log("donezo");
 
         // hasDisconnected.set(interaction.guildId, true);
 

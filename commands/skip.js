@@ -3,7 +3,7 @@ const { createAudioResource } = require('@discordjs/voice');
 // let {queues, players, playing, repeating, currSongs, startTimes} = require('../globals.js');
 let {servers} = require('../globals.js');
 
-const video_downloader = require('play-dl');
+const video_downloader = require('play-dl3');
 const ytSearch = require('yt-search');
 
 video_downloader.getFreeClientID().then((clientId) => video_downloader.setToken({

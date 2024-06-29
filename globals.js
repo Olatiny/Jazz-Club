@@ -64,35 +64,27 @@ class Server {
         // this.compact = false;   
     }
 
-    disconnect() {
+    async disconnect() {
+        console.log("begin!");
+
         if (this.audioPlayer) {
             // console.log(this.audioPlayer.listenerCount(AudioPlayerStatus.Idle) + this.audioPlayer.listenerCount('error') + " listeners before");
             this.audioPlayer.removeAllListeners();
             this.audioPlayer.stop();
             // console.log(this.audioPlayer.listenerCount(AudioPlayerStatus.Idle) + this.audioPlayer.listenerCount('error') + " listeners after");
         } 
+
         if (getVoiceConnection(this.guild_id)) {
             // console.log(getVoiceConnection(this.guild_id).listenerCount(VoiceConnectionStatus.Disconnected) + " listeners before");
-            getVoiceConnection(this.guild_id).removeAllListeners();
+            await getVoiceConnection(this.guild_id).removeAllListeners();
             // console.log(getVoiceConnection(this.guild_id).listenerCount(VoiceConnectionStatus.Disconnected) + " listeners after");
-            getVoiceConnection(this.guild_id).destroy();
+            await getVoiceConnection(this.guild_id).destroy();
         } 
+
         if (this.currentStream) {
+            this.currentStream.stream.emit("end");
             this.currentStream.stream.destroy();
         }
-        // this.guild_id = null;
-        // this.currentSong = null;
-        // this.queue = null;
-        // this.audioPlayer = null;
-        // this.queueMessage = null;
-        // this.startTime = null;
-        // this.disconnectTimer = null;
-        // this.isPlaying = null;
-        // this.repeating = null;
-        // this.hasDisconnected = null;
-        // this.hasListener = null;
-        // this.funkyMode = null;
-        // this.funkyTimeout = null;
     }
 }
 

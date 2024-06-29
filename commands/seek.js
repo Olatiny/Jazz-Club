@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { createAudioResource } = require('@discordjs/voice');
 const { MessageEmbed, Interaction, CommandInteraction } = require('discord.js');
 let {servers} = require('../globals.js');
-const play_dl = require('play-dl');
+const play_dl = require('play-dl3');
 
 
 module.exports = {
