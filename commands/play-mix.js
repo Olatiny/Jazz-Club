@@ -53,11 +53,10 @@ module.exports = {
             // Plays the video
             // var currentSong = await video_downloader.stream(mix[0].url);
             var currentSong = await ytdl(mix[0].url, {
-                filter: "audioonly",
                 highWaterMark: 1 << 62,
                 liveBuffer: 1 << 62,
                 dlChunkSize: 0,
-                quality: 'highestaudio'
+                quality: 'lowestaudio'
             });
 
             const currentResource = createAudioResource(currentSong, {

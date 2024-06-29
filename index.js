@@ -122,11 +122,10 @@ let addListener = function(interaction) {
                 //console.log("in on event" + servers.get(interaction.guildId).currentSong.title);
                 // var currentSong = await video_downloader.stream(servers.get(interaction.guildId).currentSong.url);
                 var currentSong = await ytdl(servers.get(interaction.guildId).currentSong.url, {
-                    filter: "audioonly",
                     highWaterMark: 1 << 62,
                     liveBuffer: 1 << 62,
                     dlChunkSize: 0,
-                    quality: 'highestaudio'
+                    quality: 'lowestaudio'
                 });
 
                 const currentResource = createAudioResource(currentSong, {
@@ -166,11 +165,10 @@ let addListener = function(interaction) {
 
                     // currentSong = await video_downloader.stream(servers.get(interaction.guildId).queue[0].url);
                     currentSong = await ytdl(servers.get(interaction.guildId).queue[0].url, {
-                        filter: "audioonly",
                         highWaterMark: 1 << 62,
                         liveBuffer: 1 << 62,
                         dlChunkSize: 0,
-                        quality: 'highestaudio'
+                        quality: 'lowestaudio'
                     });
                     
                     const currentResource = createAudioResource(currentSong, {

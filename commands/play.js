@@ -98,11 +98,10 @@ module.exports = {
     
                         // const currentSong = await video_downloader.stream(localvideo[0].url);
                         var currentSong = await ytdl(localvideo[0].url, {
-                            filter: "audioonly",
                             highWaterMark: 1 << 62,
                             liveBuffer: 1 << 62,
                             dlChunkSize: 0,
-                            quality: 'highestaudio'
+                            quality: 'lowestaudio'
                         });
 
                         servers.get(interaction.guildId).currentStream = currentSong;
@@ -188,11 +187,10 @@ module.exports = {
     
                         // const currentSong = await video_downloader.stream(localvideo[0].url);
                         var currentSong = await ytdl(localvideo[0].url, {
-                            filter: "audioonly",
                             highWaterMark: 1 << 62,
                             liveBuffer: 1 << 62,
                             dlChunkSize: 0,
-                            quality: 'highestaudio'
+                            quality: 'lowestaudio'
                         });
 
                         servers.get(interaction.guildId).currentStream = currentSong;
@@ -260,11 +258,10 @@ module.exports = {
                             // Downloads the video and starts to play it
                             // var currentSong = await video_downloader.stream(localvideo.url);
                             var currentSong = await ytdl(localvideo.url, {
-                                filter: "audioonly",
                                 highWaterMark: 1 << 62,
                                 liveBuffer: 1 << 62,
                                 dlChunkSize: 0,
-                                quality: 'highestaudio'
+                                quality: 'lowestaudio'
                             });
 
                             const currentResource = createAudioResource(currentSong, {
@@ -322,11 +319,10 @@ module.exports = {
                             // Downloads the video and starts to play it
                             // var currentSong = await video_downloader.stream(localvideo.url);
                             var currentSong = await ytdl(localvideo.url, {
-                                filter: "audioonly",
                                 highWaterMark: 1 << 62,
                                 liveBuffer: 1 << 62,
                                 dlChunkSize: 0,
-                                quality: 'highestaudio'
+                                quality: 'lowestaudio'
                             });
                             
                             const currentResource = createAudioResource(currentSong.stream, {
@@ -388,11 +384,10 @@ module.exports = {
     
                     // var currentSong = await video_downloader.stream(track.url);
                     var currentSong = await ytdl(track.url, {
-                        filter: "audioonly",
                         highWaterMark: 1 << 62,
                         liveBuffer: 1 << 62,
                         dlChunkSize: 0,
-                        quality: 'highestaudio'
+                        quality: 'lowestaudio'
                     });
 
                     const currentResource = createAudioResource(currentSong.stream, {
@@ -571,11 +566,10 @@ module.exports = {
                 // var currentSong = await video_downloader.stream(localvideo.url);
                 
                 var currentSong = await ytdl(localvideo.url, {
-                    filter: "audioonly",
                     highWaterMark: 1 << 62,
                     liveBuffer: 1 << 62,
                     dlChunkSize: 0,
-                    quality: 'highestaudio'
+                    quality: 'lowestaudio'
                 });
 
                 const currentResource = createAudioResource(currentSong, {
